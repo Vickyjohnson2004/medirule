@@ -1,0 +1,1 @@
+export function Card({children,className=''}:{children:React.ReactNode;className?:string}){return <section className={`rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-sm ${className}`}>{children}</section>}

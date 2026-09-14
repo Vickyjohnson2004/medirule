@@ -1,0 +1,46 @@
+{
+  "name": "medirule",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rule-Based Health Advisory and Symptom Analysis System",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "latest",
+    "@tailwindcss/postcss": "latest",
+    "bcryptjs": "latest",
+    "date-fns": "latest",
+    "framer-motion": "13.2.0",
+    "jose": "latest",
+    "lucide-react": "1.45.0",
+    "mongoose": "9.10.0",
+    "next": "16.3.5",
+    "pdfkit": "latest",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-hook-form": "7.88.0",
+    "recharts": "3.10.1",
+    "zod": "4.6.4",
+    "dotenv": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/pdfkit": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "prettier": "latest",
+    "tailwindcss": "4.3.3",
+    "tsx": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}

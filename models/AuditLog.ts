@@ -1,0 +1,3 @@
+import mongoose,{Schema,Document,Model,Types} from 'mongoose';
+export interface IAuditLog extends Document {actorId?:Types.ObjectId;action:string;entityType:string;entityId?:Types.ObjectId;metadata?:Record<string,unknown>;createdAt:Date}
+const schema=new Schema<IAuditLog>({actorId:{type:Schema.Types.ObjectId,ref:'User'},action:{type:String,required:true},entityType:{type:String,required:true},entityId:{type:Schema.Types.ObjectId},metadata:{type:Schema.Types.Mixed}},{timestamps:{createdAt:true,updatedAt:false}}); schema.index({createdAt:-1}); export default (mongoose.models.AuditLog as Model<IAuditLog>)||mongoose.model<IAuditLog>('AuditLog',schema);

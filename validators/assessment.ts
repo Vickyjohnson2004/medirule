@@ -1,0 +1,3 @@
+import * as z from 'zod';
+export const symptomInputSchema=z.object({symptomId:z.string().optional(),customText:z.string().trim().max(300).optional(),severity:z.enum(['mild','moderate','severe']),duration:z.enum(['less_than_24h','1_3_days','4_7_days','1_2_weeks','more_than_2_weeks']),onset:z.enum(['sudden','gradual']),frequency:z.string().max(100).optional(),characteristics:z.string().max(500).optional()}).refine(v=>v.symptomId||v.customText,{message:'Select a known symptom or enter a custom symptom.'});
+export const assessmentSchema=z.object({symptoms:z.array(symptomInputSchema).min(1).max(30),followUpAnswers:z.record(z.string(),z.string()).default({})});

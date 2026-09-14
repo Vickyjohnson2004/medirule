@@ -1,0 +1,3 @@
+import mongoose,{Schema,Document,Model} from 'mongoose';
+export interface IRedFlag extends Document {name:string;description:string;symptomIds:Schema.Types.ObjectId[];keywords:string[];message:string;priority:number;status:'active'|'inactive';createdAt:Date;updatedAt:Date}
+const schema=new Schema<IRedFlag>({name:{type:String,required:true},description:{type:String,required:true},symptomIds:[{type:Schema.Types.ObjectId,ref:'Symptom'}],keywords:[String],message:{type:String,required:true},priority:{type:Number,default:100},status:{type:String,enum:['active','inactive'],default:'active'}},{timestamps:true}); export default (mongoose.models.RedFlag as Model<IRedFlag>)||mongoose.model<IRedFlag>('RedFlag',schema);

@@ -1,0 +1,3 @@
+import mongoose,{Schema,Document,Model,Types} from 'mongoose';
+export interface IProfessionalReview extends Document {assessmentId:Types.ObjectId;professionalId:Types.ObjectId;notes:string;ruleFeedback:string[];createdAt:Date;updatedAt:Date}
+const schema=new Schema<IProfessionalReview>({assessmentId:{type:Schema.Types.ObjectId,ref:'Assessment',required:true},professionalId:{type:Schema.Types.ObjectId,ref:'User',required:true},notes:{type:String,maxLength:3000},ruleFeedback:[String]},{timestamps:true}); export default (mongoose.models.ProfessionalReview as Model<IProfessionalReview>)||mongoose.model<IProfessionalReview>('ProfessionalReview',schema);

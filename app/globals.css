@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+
+:root { --background:#f6f8f7; --foreground:#13211d; --muted:#61716c; --card:#ffffff; --border:#dfe8e4; --primary:#0d7663; --primary-strong:#075b4d; --accent:#dff4ee; }
+.dark { --background:#0b1412; --foreground:#edf7f3; --muted:#9cb0a9; --card:#12201c; --border:#263832; --primary:#53c7ad; --primary-strong:#8be2ce; --accent:#183b32; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--background); color:var(--foreground); font-family:Arial, Helvetica, sans-serif; }
+button,input,textarea,select { font:inherit; }
+::selection { background:#bde9de; color:#073c32; }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; } }
