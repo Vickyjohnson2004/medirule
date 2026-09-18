@@ -1,1 +1,7 @@
-import {getCurrentUser} from '@/lib/auth'; import {apiError,apiSuccess} from '@/lib/security'; export async function GET(){const user=await getCurrentUser();if(!user)return apiError('Not authenticated','UNAUTHORIZED',401);return apiSuccess(user);}
+import { getCurrentUser } from '@/lib/auth';
+import { apiError, apiSuccess } from '@/lib/security';
+export async function GET() {
+  const user = await getCurrentUser();
+  if (!user) return apiError('Not authenticated', 'UNAUTHORIZED', 401);
+  return apiSuccess(user);
+}

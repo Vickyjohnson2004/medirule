@@ -7,14 +7,26 @@ import { requireUser } from '@/lib/auth';
 import { analyzeSymptoms } from '@/services/rule-engine';
 import { apiError, apiSuccess } from '@/lib/security';
 
-export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+/**
+ * POST /api/assessments/:id/analyze
+ *
+ * Re-runs analysis on an existing assessment.
+ * Useful for admin re-analysis when the knowledge base has been updated.
+ */
+export async function POST(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const user = await requireUser(['patient', 'professional', 'admin']);
     const { id } = await params;
     await connectDB();
+
     const assessment = await Assessment.findById(id).lean();
     if (!assessment) return apiError('Assessment not found', 'NOT_FOUND', 404);
-    if (user.role === 'patient' && String(assessment.userId) !== String(user._id)) return apiError('Forbidden', 'FORBIDDEN', 403);
+    if (user.role === 'patient' && String(assessment.userId) !== String(user._id)) {
+      return apiError('Forbidden', 'FORBIDDEN', 403);
+    }
 
     const result = await analyzeSymptoms({
       symptoms: assessment.symptoms.map((s) => ({
@@ -37,7 +49,9 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
           ruleId: new mongoose.Types.ObjectId(m.ruleId),
           version: m.ruleVersion,
           name: m.name,
+          conditionName: m.conditionName,
           score: m.score,
+          maxScore: m.maxScore,
           minimumScore: m.minimumScore,
           matchedSymptoms: m.matchedSymptoms,
           missingSymptoms: m.missingSymptoms,
@@ -48,14 +62,21 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
         riskLevel: result.riskLevel,
         advisory: result.advisory,
         disclaimer: result.disclaimer,
+        noMatch: result.noMatch,
+        unknownSymptoms: result.unknownSymptoms,
       },
       { upsert: true, new: true },
     );
-    await Assessment.updateOne({ _id: id }, { status: 'analyzed', riskLevel: result.riskLevel, analysisId: saved._id });
+
+    await Assessment.updateOne(
+      { _id: id },
+      { status: 'analyzed', riskLevel: result.riskLevel, analysisId: saved._id },
+    );
+
     return apiSuccess(result);
   } catch (e: any) {
     if (e.message === 'UNAUTHORIZED') return apiError('Please sign in', 'UNAUTHORIZED', 401);
-    console.error(e);
+    console.error('[POST /api/assessments/:id/analyze]', e);
     return apiError('Unable to analyze assessment', 'ASSESSMENT_ANALYSIS_ERROR', 500);
   }
 }

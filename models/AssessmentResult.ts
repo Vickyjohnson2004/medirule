@@ -1,12 +1,15 @@
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
+
 export interface IAssessmentResult extends Document {
   assessmentId: Types.ObjectId;
   ruleVersionSnapshot: {
     ruleId: Types.ObjectId;
     version: number;
     name: string;
+    conditionName: string;
     score: number;
     minimumScore: number;
+    maxScore: number;
     matchedSymptoms: string[];
     missingSymptoms: string[];
     explanation: string;
@@ -16,18 +19,28 @@ export interface IAssessmentResult extends Document {
   riskLevel: string;
   advisory: string;
   disclaimer: string;
+  noMatch: boolean;
+  unknownSymptoms: string[];
   createdAt: Date;
   updatedAt: Date;
 }
+
 const schema = new Schema<IAssessmentResult>(
   {
-    assessmentId: { type: Schema.Types.ObjectId, ref: 'Assessment', required: true, unique: true },
+    assessmentId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Assessment',
+      required: true,
+      unique: true,
+    },
     ruleVersionSnapshot: [
       {
         ruleId: { type: Schema.Types.ObjectId, ref: 'Rule' },
         version: Number,
         name: String,
+        conditionName: { type: String, default: '' },
         score: Number,
+        maxScore: Number,
         minimumScore: Number,
         matchedSymptoms: [String],
         missingSymptoms: [String],
@@ -39,8 +52,11 @@ const schema = new Schema<IAssessmentResult>(
     riskLevel: String,
     advisory: String,
     disclaimer: String,
+    noMatch: { type: Boolean, default: false },
+    unknownSymptoms: [String],
   },
   { timestamps: true },
 );
+
 export default (mongoose.models.AssessmentResult as Model<IAssessmentResult>) ||
   mongoose.model<IAssessmentResult>('AssessmentResult', schema);
