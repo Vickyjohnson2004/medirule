@@ -1,5 +1,10 @@
 import Rule from '@/models/Rule';
 import RedFlag from '@/models/RedFlag';
+// These imports are required so Mongoose registers the schemas before
+// .populate() references them — without this, a MissingSchemaError is thrown.
+import '@/models/Advisory';
+import '@/models/Condition';
+import '@/models/Symptom';
 import type { AnalysisInput, AnalysisResult, RiskLevel, RuleMatch } from '@/types';
 
 const DISCLAIMER =
