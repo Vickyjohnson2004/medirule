@@ -18,7 +18,7 @@ import { apiError, apiSuccess } from '@/lib/security';
  */
 export async function POST(req: NextRequest) {
   try {
-    const user = await requireUser(['patient', 'professional']);
+    const user = await requireUser(['patient', 'professional', 'admin']);
     const parsed = assessmentSchema.safeParse(await req.json());
     if (!parsed.success) {
       return apiError('Please provide a valid assessment', 'VALIDATION_ERROR');
